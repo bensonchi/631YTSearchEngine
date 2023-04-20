@@ -28,15 +28,16 @@ def search_videos():
         result_text.delete(1.0, tk.END)
         for r in results:
             result_dict = json.loads(r["_src_"])
-            print(result_dict)
             video_id = result_dict['id']['videoId']
             r = result_dict["snippet"]
             title = r['title']
+            publish_date = r['publishedAt']
             url = f"https://www.youtube.com/watch?v={video_id}"
 
             result_text.insert(tk.END, f"{title}\n", "title")
+            result_text.insert(tk.END, f"{publish_date}\n", "date")
             result_text.insert(tk.END, f"{url}\n", "url")
-    #             result_text.insert(tk.END, f"{url}\n", "url")
+            result_text.insert(tk.END, f"\n")
     except requests.RequestException as e:
         result_text.delete(1.0, tk.END)
         result_text.insert(tk.END, f"An error occurred: {str(e)}")
