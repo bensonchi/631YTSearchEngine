@@ -9,7 +9,7 @@ def search_videos():
         result_text.set("Please enter a search query")
         return
 
-    solr_url = "http://localhost:8983/solr/your_collection/select"
+    solr_url = "http://localhost:8983/solr/tech_products/select"
     params = {
         "q": query,
         "rows": 10,
@@ -21,7 +21,14 @@ def search_videos():
         data = response.json()
 
         results = data["response"]["docs"]
-        result_text.set("\n".join(f"{r['title'][0]}" for r in results))
+
+        display_str = ""
+        for result in results:
+            result_dict = json.loads(result["_src_"])
+            display_str += result_dict["snippet"]["title"]
+            display_str += "\n"
+            display_str += "\n"
+        result_text.set(display_str)
     except requests.RequestException as e:
         result_text.set(f"An error occurred: {str(e)}")
 
